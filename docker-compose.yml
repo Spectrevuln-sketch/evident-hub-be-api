@@ -1,0 +1,22 @@
+# version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+    container_name: evident-api-dev
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ./docs:/app/docs
+      - .:/app
+    env_file:
+      - .env
+    # command: sh -c "swag init && air ./cmd/main.go -b 0.0.0.0"
+    networks:
+      - postgresql_default
+
+networks:
+  postgresql_default:
+    external: true

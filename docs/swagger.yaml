@@ -1,0 +1,335 @@
+definitions:
+  model.SPayloadChangePassword:
+    properties:
+      new_password:
+        example: new_password
+        type: string
+      old_password:
+        example: old_password
+        type: string
+      username:
+        example: username
+        type: string
+    type: object
+  model.SPayloadLogin:
+    properties:
+      password:
+        example: password
+        type: string
+      username:
+        example: username
+        type: string
+    type: object
+  model.SPayloadRegister:
+    properties:
+      fullname:
+        example: fullname
+        type: string
+      password:
+        example: password
+        type: string
+      role_id:
+        example: uuid-role
+        type: string
+      username:
+        example: username
+        type: string
+    type: object
+info:
+  contact:
+    email: gerry.radityaky@gmail.com
+    name: Sofware Engineer
+  description: EVIDENT HUB API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: API Evident Hub V1
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of server.
+      tags:
+      - HealthCheck
+  /v1/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Change Password.
+      parameters:
+      - description: Change Password
+        in: body
+        name: change-password
+        required: true
+        schema:
+          $ref: '#/definitions/model.SPayloadChangePassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Change Password.
+      tags:
+      - Authentication
+  /v1/evidents:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all evident entries.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Get All Evident.
+      tags:
+      - Evident
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new evident entry
+      parameters:
+      - description: Title
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Foto Evident
+        in: formData
+        name: upload_temuan
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create New Evident
+      tags:
+      - Evident
+  /v1/evidents/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve one evident entries.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Get By Id Evident.
+      tags:
+      - Evident
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Revisi a evident entry
+      parameters:
+      - description: Evident ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Foto hasil revisi
+        in: formData
+        name: upload_temuan_after
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Revisi Evident
+      tags:
+      - Evident
+  /v1/leaderboard:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all leaderboard entries.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Get All Leaderboard.
+      tags:
+      - Leaderboard
+  /v1/leaderboard/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve one leaderboard entries.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Get By Id Leaderboard.
+      tags:
+      - Leaderboard
+  /v1/leaderboard/me:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve one leaderboard entries.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Get My Leaderboard.
+      tags:
+      - Leaderboard
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Login User return token in body or if next js framework must withCredential
+        false.
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.SPayloadLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Login User.
+      tags:
+      - Authentication
+  /v1/register:
+    post:
+      consumes:
+      - application/json
+      description: Register User For PBB, Payload Role Must uuid of Ref Schema.
+      parameters:
+      - description: register
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/model.SPayloadRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register User.
+      tags:
+      - Authentication
+  /v1/token-check:
+    get:
+      consumes:
+      - application/json
+      description: Token Check User return token in body or if next js framework must
+        withCredential false.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - token: []
+      summary: Token Check User.
+      tags:
+      - Authentication
+securityDefinitions:
+  token:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
