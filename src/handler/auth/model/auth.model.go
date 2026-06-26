@@ -11,7 +11,6 @@ type SPayloadRegister struct {
 	Fullname string `json:"fullname" example:"fullname"`
 	Password string `json:"password" example:"password"`
 	Username string `json:"username" example:"username"`
-	RoleID   string `json:"role_id" example:"uuid-role"`
 }
 
 type SPayloadLogin struct {

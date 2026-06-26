@@ -28,7 +28,7 @@ func (h *Handler) SignUpHandler(ctx *gin.Context) error {
 	}
 
 	roleSchema := new(common.Roles)
-	if err := config.DB.First(roleSchema, "id = ?", payload.RoleID).Error; err != nil {
+	if err := config.DB.First(roleSchema, "name = ?", "DEALER").Error; err != nil {
 		return utils.ResponseError("99", "Invalid Role ID", ctx)
 	}
 
