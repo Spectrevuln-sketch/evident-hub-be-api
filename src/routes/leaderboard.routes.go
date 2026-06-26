@@ -21,7 +21,7 @@ func NewLeaderBoardRoutes(group *gin.RouterGroup, handler *leaderboard.Handler) 
 
 func (r *LeaderBoardRoutes) SetupRoutes() {
 	leaderboard := r.route.Group("/leaderboard")
-	leaderboard.GET("/", utils.Wrap(r.handler.GetAllLeaderBoard))
+	leaderboard.GET("", utils.Wrap(r.handler.GetAllLeaderBoard))
 	leaderboard.GET("/:id", utils.Wrap(r.handler.GetLeaderBoardById))
 	leaderboard.GET("/me", utils.Wrap(r.handler.GetMyLeaderBoard))
 
