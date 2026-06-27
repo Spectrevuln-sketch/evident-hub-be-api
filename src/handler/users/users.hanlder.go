@@ -4,6 +4,7 @@ import (
 	"evidence-hub-be/src/core/config"
 	"evidence-hub-be/src/core/schema/common"
 	"evidence-hub-be/src/core/utils"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +25,7 @@ func (h *Handler) GetAllUsers(ctx *gin.Context) error {
 	var user common.Users
 	var role common.Roles
 
-	QroleName := ctx.Query("role")
+	QroleName := strings.ToUpper(ctx.Query("role"))
 
 	tokenString := ctx.GetHeader("Authorization")
 
@@ -44,9 +45,10 @@ func (h *Handler) GetAllUsers(ctx *gin.Context) error {
 		return utils.ResponseError("99", "Forbidden", ctx)
 	}
 	var users []common.Users
+
 	if QroleName != "" {
 
-		if err := config.DB.First(&role, "name = ?", QroleName).Error; err != nil {
+		if err := config.DB.First(&role, "name = ?", strings.ToUpper(QroleName)).Error; err != nil {
 			return utils.ResponseError("99", "Role Not Found", ctx)
 		}
 
