@@ -9,6 +9,7 @@ import (
 	"evidence-hub-be/src/handler/evident"
 	healthcheck "evidence-hub-be/src/handler/healthCheck"
 	"evidence-hub-be/src/handler/leaderboard"
+	"evidence-hub-be/src/handler/users"
 
 	// "evidence-hub-be/src/handler/role"
 
@@ -95,6 +96,19 @@ func (r *Routes) Init() {
 	)
 
 	leaderBoardRoutes.SetupRoutes()
+
+	// Users
+	usersHandler := users.NewHandler(
+		r.cfg,
+		r.token,
+	)
+
+	usersRoutes := NewUserRoutes(
+		v1,
+		usersHandler,
+	)
+
+	usersRoutes.SetupRoutes()
 
 	// Role
 	// roleHandler := role.NewHandler()
