@@ -7,7 +7,7 @@ import (
 )
 
 type SCreateEvidentRequest struct {
-	DealerID      string `json:"dealer_id" binding:"required"`
+	DealerID      string `json:"dealer" binding:"required"`
 	Category      string `json:"category" binding:"required"`
 	CatatanTemuan string `json:"catatan_temuan" binding:"required"`
 }

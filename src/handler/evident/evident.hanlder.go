@@ -50,7 +50,7 @@ func (h *Handler) CreateEvidentHandler(ctx *gin.Context) error {
 	// FORM DATA
 	// ==========================
 	payload := &model.SCreateEvidentRequest{
-		DealerID:      res.UserID,
+		DealerID:      ctx.PostForm("dealer"),
 		Category:      ctx.PostForm("category"),
 		CatatanTemuan: ctx.PostForm("catatan_temuan"),
 	}
@@ -104,7 +104,7 @@ func (h *Handler) CreateEvidentHandler(ctx *gin.Context) error {
 		UserID:      user.ID,
 		EvidentID:   &newEvident.ID,
 		Point:       leaderboard.GetPointByCategory(newEvident.Category),
-		Description: "Create Evident",
+		Description: "Create Evidence",
 	}
 	if err := tx.Create(&leaderBoardPoint).Error; err != nil {
 		tx.Rollback()
