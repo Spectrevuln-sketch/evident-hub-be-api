@@ -43,14 +43,20 @@ func (h *Handler) GetAllUsers(ctx *gin.Context) error {
 	if user.Role.Name != "AUDIT" {
 		return utils.ResponseError("99", "Forbidden", ctx)
 	}
-
-	if err := config.DB.First(&role, "name = ?", QroleName).Error; err != nil {
-		return utils.ResponseError("99", "Role Not Found", ctx)
-	}
 	var users []common.Users
+	if QroleName != "" {
 
-	if err := config.DB.Preload("Role").Find(&users, "role_id = ?", role.ID).Error; err != nil {
-		return utils.ResponseError("99", "User Not Found", ctx)
+		if err := config.DB.First(&role, "name = ?", QroleName).Error; err != nil {
+			return utils.ResponseError("99", "Role Not Found", ctx)
+		}
+
+		if err := config.DB.Preload("Role").Find(&users, "role_id = ?", role.ID).Error; err != nil {
+			return utils.ResponseError("99", "User Not Found", ctx)
+		}
+	} else {
+		if err := config.DB.Preload("Role").Find(&users).Error; err != nil {
+			return utils.ResponseError("99", "User Not Found", ctx)
+		}
 	}
 
 	return utils.ResponseSuccess("00", users, ctx)
